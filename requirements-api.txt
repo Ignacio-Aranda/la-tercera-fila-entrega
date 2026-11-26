@@ -1,0 +1,7 @@
+# Dependencias de la API en Docker (OpenCV sin interfaz gráfica).
+numpy==2.5.3
+onnxruntime==1.30.0
+opencv-python-headless==5.0.0.93
+fastapi==0.143.0
+uvicorn==0.54.0
+python-multipart==0.0.32

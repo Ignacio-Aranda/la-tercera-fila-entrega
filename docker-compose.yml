@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    environment:
+      # Clave de la rotación secreta de las plantillas: se lee del fichero .env
+      # (no versionado). Sin ella el sistema no arranca.
+      CLAVE_PLANTILLAS: ${CLAVE_PLANTILLAS:?Falta CLAVE_PLANTILLAS; copia .env.example a .env y pon la clave, que se entrega aparte}
+      # Clave de administración (inscribir, borrar, ver scores). Sin ella, la API
+      # no permite inscribir ni borrar.
+      CLAVE_ADMIN: ${CLAVE_ADMIN:-}
+      RUTA_VERSION_BD: /estado/version_bd
+      RUTA_BLOQUEOS: /estado/bloqueos.json
+    volumes:
+      # El CSV queda en ./datos del repo, fuera del contenedor.
+      - ./datos:/datos
+      # Última versión vista de la base de datos y estado del bloqueo, en una
+      # carpeta aparte de datos/.
+      - ./estado:/estado
+      # Fotos del dataset, para usarlas desde la línea de órdenes del contenedor.
+      - ./Dataset:/app/Dataset:ro
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    ports:
+      # Puerto de la web; se cambia con PUERTO en el fichero .env.
+      - "${PUERTO:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped

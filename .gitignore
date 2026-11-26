@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+
+# Modelo LVFace (77 MB): se descarga con descargar_modelos.py
+modelos/LVFace-*.onnx
+# Base de datos biométrica: se versionan el CSV con las personas inscritas de la
+# práctica, su firma y las caras recortadas que muestra la web.
+datos/*
+!datos/base_datos.csv
+!datos/base_datos.firma
+!datos/caras/
+
+# Claves secretas (ver .env.example)
+.env
+# Última versión vista de la base de datos (estado local de cada despliegue)
+estado/
